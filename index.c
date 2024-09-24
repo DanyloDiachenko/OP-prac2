@@ -1,10 +1,11 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 
 #define WELCOME_MESSAGE "Welcome to the Triangle Properties Calculator App!"
 #define MIN_SIDE_LENGTH 0.001
 #define MAX_SIDE_LENGTH 1000
+#define MIN_DECIMAL_PLACES 0
+#define MAX_DECIMAL_PLACES 12
 
 enum TriangleSides {
     SIDE_A,
@@ -15,6 +16,7 @@ enum TriangleSides {
 int validateTriangleSide(double sideLength);
 int validateDecimalPlaces(int decimalPlaces);
 int validateTriangleSides(double a, double b, double c);
+int readAndValidateSide(char sideName, double *side);
 
 double calculatePerimeter(double a, double b, double c);
 double calculateArea(double a, double b, double c, double semiPerimeter);
@@ -32,40 +34,23 @@ int main() {
 
     printf(WELCOME_MESSAGE "\n\n");
 
-    printf("Enter the length of side 'a' (greater or equal to %.3f and less or equal to %d): ", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
-    scanf("%lf", &a);
-    fflush(stdin);
-    if (validateTriangleSide(a) == -1) {
-        return -1;
-    }
-
-    printf("Enter the length of side 'b' (from %.3f to %d): ", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
-    scanf("%lf", &b);
-    fflush(stdin);
-    if (validateTriangleSide(b) == -1) {
-        return -1;
-    }
-
-    printf("Enter the length of side 'c' (from %.3f to %d): ", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
-    scanf("%lf", &c);
-    fflush(stdin);
-    if (validateTriangleSide(c) == -1) {
-        return -1;
-    }
+    if (readAndValidateSide('a', &a) == -1) return -1;
+    if (readAndValidateSide('b', &b) == -1) return -1;
+    if (readAndValidateSide('c', &c) == -1) return -1;
 
     if (validateTriangleSides(a, b, c) == -1) {
         return -1;
     }
 
-    printf("Enter the number of decimal places (from 0 to 12): ");
-    scanf("%hu", &decimalPlaces);
+    printf("Enter the number of decimal places (from %d to %d): ", MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES);
+    scanf("%hd", &decimalPlaces);
     fflush(stdin);
     if (validateDecimalPlaces(decimalPlaces) == -1) {
         return -1;
     }
 
     perimeter = calculatePerimeter(a, b, c);
-    printf("Perimeter: %.*f\n", decimalPlaces, truncateToDecimalPlaces(perimeter, decimalPlaces));
+    printf("\nPerimeter: %.*f\n", decimalPlaces, truncateToDecimalPlaces(perimeter, decimalPlaces));
 
     semiPerimeter = perimeter / 2.0;
 
@@ -109,9 +94,27 @@ int validateTriangleSide(const double sideLength) {
     return 0;
 }
 
+int readAndValidateSide(const char sideName, double *side) {
+    char extraChar;
+
+    printf("Enter the length of side '%c' (from %.3f to %d): ", sideName, MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
+
+    if (scanf("%lf%c", side, &extraChar) != 2 || extraChar != '\n') {
+        printf("Invalid input! Please enter a valid number without extra characters.\n");
+        return -1;
+    }
+
+    fflush(stdin);
+    if (validateTriangleSide(*side) == -1) {
+        return -1;
+    }
+
+    return 0;
+}
+
 int validateDecimalPlaces(const int decimalPlaces) {
-    if (decimalPlaces < 0 || decimalPlaces > 12) {
-        printf("Decimal places must be between 0 and 12.\n");
+    if (decimalPlaces < MIN_DECIMAL_PLACES || decimalPlaces > MAX_DECIMAL_PLACES) {
+        printf("Decimal places must be between %d and %d.\n", MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES);
 
         return -1;
     }
