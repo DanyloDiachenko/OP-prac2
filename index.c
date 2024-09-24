@@ -12,26 +12,27 @@ enum TriangleSides {
     SIDE_C
 };
 
-int validateTriangleSide(const double sideLength);
-int validateDecimalPlaces(const int decimalPlaces);
-int validateTriangleSides(const double a, const double b, const double c);
+int validateTriangleSide(double sideLength);
+int validateDecimalPlaces(int decimalPlaces);
+int validateTriangleSides(double a, double b, double c);
 
-double calculatePerimeter(const double a, const double b, const double c);
-double calculateArea(const double a, const double b, const double c, const double semiPerimeter);
-double calculateHeight(const double a, const double b, const double c, const double area, const enum TriangleSides heightOnSide);
-double calculateMedian(const double a, const double b, const double c, const enum TriangleSides medianOnSide);
-double calculateBisector(const double a, const double b, const double c, const double semiPerimeter, const enum TriangleSides bisectorOnSide);
+double calculatePerimeter(double a, double b, double c);
+double calculateArea(double a, double b, double c, double semiPerimeter);
+double calculateHeight(double a, double b, double c, double area, enum TriangleSides heightOnSide);
+double calculateMedian(double a, double b, double c, enum TriangleSides medianOnSide);
+double calculateBisector(double a, double b, double c, double semiPerimeter, enum TriangleSides bisectorOnSide);
 
-double truncateToDecimalPlaces(const double value, const int decimalPlaces);
+double truncateToDecimalPlaces(double value, int decimalPlaces);
 
 int main() {
     double a = 0.0, b = 0.0, c = 0.0;
     double semiPerimeter = 0.0, perimeter = 0.0;
     short int decimalPlaces = 0;
+    const char sideNames[] = {'a', 'b', 'c'};
 
     printf(WELCOME_MESSAGE "\n\n");
 
-    printf("Enter the length of side 'a' (greater than %.3f and less than %d): ", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
+    printf("Enter the length of side 'a' (greater or equal to %.3f and less or equal to %d): ", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
     scanf("%lf", &a);
     fflush(stdin);
     if (validateTriangleSide(a) == -1) {
@@ -71,26 +72,29 @@ int main() {
     const double area = calculateArea(a, b, c, semiPerimeter);
     printf("Area: %.*f\n", decimalPlaces, truncateToDecimalPlaces(area, decimalPlaces));
 
-    const double heightOnA = calculateHeight(a, b, c, area, SIDE_A);
-    const double heightOnB = calculateHeight(a, b, c, area, SIDE_B);
-    const double heightOnC = calculateHeight(a, b, c, area, SIDE_C);
-    printf("Height to side 'a' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(heightOnA, decimalPlaces));
-    printf("Height to side 'b' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(heightOnB, decimalPlaces));
-    printf("Height to side 'c' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(heightOnC, decimalPlaces));
+    for(int i = 0; i < 3; i++) {
+        printf("Height to side '%c' (truncated): %.*f\n",
+            sideNames[i],
+            decimalPlaces,
+            truncateToDecimalPlaces(calculateHeight(a, b, c, area, i), decimalPlaces)
+        );
+    }
 
-    const double medianOnA = calculateMedian(a, b, c, SIDE_A);
-    const double medianOnB = calculateMedian(a, b, c, SIDE_B);
-    const double medianOnC = calculateMedian(a, b, c, SIDE_C);
-    printf("Median to 'a' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(medianOnA, decimalPlaces));
-    printf("Median to 'b' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(medianOnB, decimalPlaces));
-    printf("Median to 'c' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(medianOnC, decimalPlaces));
+    for(int i = 0; i < 3; i++) {
+        printf("Median to side '%c' (truncated): %.*f\n",
+            sideNames[i],
+            decimalPlaces,
+            truncateToDecimalPlaces(calculateMedian(a, b, c, i), decimalPlaces)
+        );
+    }
 
-    const double bisectorOnA = calculateBisector(a, b, c, semiPerimeter, SIDE_A);
-    const double bisectorOnB = calculateBisector(a, b, c, semiPerimeter, SIDE_B);
-    const double bisectorOnC = calculateBisector(a, b, c, semiPerimeter, SIDE_C);
-    printf("Bisector to side 'a' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(bisectorOnA, decimalPlaces));
-    printf("Bisector to side 'b' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(bisectorOnB, decimalPlaces));
-    printf("Bisector to side 'c' (truncated): %.*f\n", decimalPlaces, truncateToDecimalPlaces(bisectorOnC, decimalPlaces));
+    for(int i = 0; i < 3; i++) {
+        printf("Bisector to side '%c' (truncated): %.*f\n",
+            sideNames[i],
+            decimalPlaces,
+            truncateToDecimalPlaces(calculateBisector(a, b, c, semiPerimeter, i), decimalPlaces)
+        );
+    }
 
     return 0;
 }
@@ -133,7 +137,7 @@ double calculateArea(const double a, const double b, const double c, const doubl
     return sqrt(semiPerimeter * (semiPerimeter - a) * (semiPerimeter - b) * (semiPerimeter - c));
 }
 
-double calculateHeight(const double a, double b, const double c, const double area, const enum TriangleSides heightOnSide) {
+double calculateHeight(const double a, const double b, const double c, const double area, const enum TriangleSides heightOnSide) {
     switch (heightOnSide) {
         case SIDE_A: return (2.0 * area) / a;
         case SIDE_B: return (2.0 * area) / b;
