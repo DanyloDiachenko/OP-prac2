@@ -24,7 +24,7 @@ double calculateHeight(double a, double b, double c, double area, enum TriangleS
 double calculateMedian(double a, double b, double c, enum TriangleSides medianOnSide);
 double calculateBisector(double a, double b, double c, double semiPerimeter, enum TriangleSides bisectorOnSide);
 
-double truncateToDecimalPlaces(double value, int decimalPlaces);
+double truncateNumber(double value, int decimalPlaces);
 
 int main() {
     double a = 0.0, b = 0.0, c = 0.0;
@@ -50,18 +50,18 @@ int main() {
     }
 
     perimeter = calculatePerimeter(a, b, c);
-    printf("\nPerimeter: %.*f\n", decimalPlaces, truncateToDecimalPlaces(perimeter, decimalPlaces));
+    printf("\nPerimeter: %.*f\n", decimalPlaces, truncateNumber(perimeter, decimalPlaces));
 
     semiPerimeter = perimeter / 2.0;
 
     const double area = calculateArea(a, b, c, semiPerimeter);
-    printf("Area: %.*f\n", decimalPlaces, truncateToDecimalPlaces(area, decimalPlaces));
+    printf("Area: %.*f\n", decimalPlaces, truncateNumber(area, decimalPlaces));
 
     for(int i = 0; i < 3; i++) {
         printf("Height to side '%c' (truncated): %.*f\n",
             sideNames[i],
             decimalPlaces,
-            truncateToDecimalPlaces(calculateHeight(a, b, c, area, i), decimalPlaces)
+            truncateNumber(calculateHeight(a, b, c, area, i), decimalPlaces)
         );
     }
 
@@ -69,7 +69,7 @@ int main() {
         printf("Median to side '%c' (truncated): %.*f\n",
             sideNames[i],
             decimalPlaces,
-            truncateToDecimalPlaces(calculateMedian(a, b, c, i), decimalPlaces)
+            truncateNumber(calculateMedian(a, b, c, i), decimalPlaces)
         );
     }
 
@@ -77,7 +77,7 @@ int main() {
         printf("Bisector to side '%c' (truncated): %.*f\n",
             sideNames[i],
             decimalPlaces,
-            truncateToDecimalPlaces(calculateBisector(a, b, c, semiPerimeter, i), decimalPlaces)
+            truncateNumber(calculateBisector(a, b, c, semiPerimeter, i), decimalPlaces)
         );
     }
 
@@ -176,7 +176,7 @@ double calculateBisector(const double a, const double b, const double c, const d
     }
 }
 
-double truncateToDecimalPlaces(const double value, const int decimalPlaces) {
+double truncateNumber(const double value, const int decimalPlaces) {
     const double factor = pow(10, decimalPlaces);
 
     return trunc(value * factor) / factor;
