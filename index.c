@@ -2,8 +2,6 @@
 #include <math.h>
 
 #define WELCOME_MESSAGE "Welcome to the Triangle Properties Calculator App!"
-#define MIN_SIDE_LENGTH 0.001
-#define MAX_SIDE_LENGTH 1000
 #define MIN_DECIMAL_PLACES 0
 #define MAX_DECIMAL_PLACES 12
 
@@ -85,8 +83,8 @@ int main() {
 }
 
 int validateTriangleSide(const double sideLength) {
-    if (sideLength < MIN_SIDE_LENGTH || sideLength > MAX_SIDE_LENGTH) {
-        printf("Side cannot be less than %.3f and cannot be greater than %d!\n", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
+    if (sideLength <= 0) {
+        printf("Side cannot be less or equal to 0!\n");
 
         return -1;
     }
@@ -97,7 +95,7 @@ int validateTriangleSide(const double sideLength) {
 int readAndValidateSide(const char sideName, double *side) {
     char extraChar;
 
-    printf("Enter the length of side '%c' (from %.3f to %d): ", sideName, MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
+    printf("Enter the length of side '%c': ", sideName);
 
     if (scanf("%lf%c", side, &extraChar) != 2 || extraChar != '\n') {
         printf("Invalid input! Please enter a valid number without extra characters.\n");
