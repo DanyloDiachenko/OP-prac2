@@ -13,10 +13,9 @@ enum TriangleSides {
     SIDE_C
 };
 
-int validateTriangleSide(double sideLength);
-int validateDecimalPlaces(int decimalPlaces);
+void readAndValidateSide(char sideName, double *side);
+void readAndValidateDecimalPlaces(short int *decimalPlaces);
 int validateTriangleSides(double a, double b, double c);
-int readAndValidateSide(char sideName, double *side);
 
 double calculatePerimeter(double a, double b, double c);
 double calculateArea(double a, double b, double c, double semiPerimeter);
@@ -32,22 +31,17 @@ int main() {
     short int decimalPlaces = 0;
     const char sideNames[] = {'a', 'b', 'c'};
 
-    printf(WELCOME_MESSAGE "\n\n");
+    printf("%s\n\n", WELCOME_MESSAGE);
 
-    if (readAndValidateSide('a', &a) == -1) return -1;
-    if (readAndValidateSide('b', &b) == -1) return -1;
-    if (readAndValidateSide('c', &c) == -1) return -1;
+    readAndValidateSide('a', &a);
+    readAndValidateSide('b', &b);
+    readAndValidateSide('c', &c);
 
     if (validateTriangleSides(a, b, c) == -1) {
         return -1;
     }
 
-    printf("Enter the number of decimal places (from %d to %d): ", MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES);
-    scanf("%hd", &decimalPlaces);
-    fflush(stdin);
-    if (validateDecimalPlaces(decimalPlaces) == -1) {
-        return -1;
-    }
+    readAndValidateDecimalPlaces(&decimalPlaces);
 
     perimeter = calculatePerimeter(a, b, c);
     printf("\nPerimeter: %.*e\n", decimalPlaces, truncateNumber(perimeter, decimalPlaces));
@@ -84,47 +78,50 @@ int main() {
     return 0;
 }
 
-int validateTriangleSide(const double sideLength) {
-    if (sideLength < MIN_SIDE_LENGTH || sideLength > MAX_SIDE_LENGTH) {
-        printf("Side cannot be less than %.5f and cannot be greater than %d!\n", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
-
-        return -1;
-    }
-
-    return 0;
-}
-
-int readAndValidateSide(const char sideName, double *side) {
+void readAndValidateSide(const char sideName, double *side) {
+    int validInput = 0;
     char extraChar;
 
-    printf("Enter the length of side '%c' (from %.5f to %d): ", sideName, MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
+    do {
+        printf("Enter the length of side '%c' (from %.5f to %d): ", sideName, MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
 
-    if (scanf("%lf%c", side, &extraChar) != 2 || extraChar != '\n') {
-        printf("Invalid input! Please enter a valid number without extra characters.\n");
-        return -1;
-    }
+        if (scanf("%lf%c", side, &extraChar) != 2 || extraChar != '\n') {
+            printf("Invalid input! Please enter a number without extra characters.\n");
+        } else if (*side < MIN_SIDE_LENGTH || *side > MAX_SIDE_LENGTH) {
+            printf("The side length cannot be less than %.5f and greater than %d!\n", MIN_SIDE_LENGTH, MAX_SIDE_LENGTH);
+        } else {
+            validInput = 1;
+        }
 
-    fflush(stdin);
-    if (validateTriangleSide(*side) == -1) {
-        return -1;
-    }
-
-    return 0;
+        while (extraChar != '\n' && extraChar != EOF) {
+            extraChar = getchar();
+        }
+    } while (!validInput);
 }
 
-int validateDecimalPlaces(const int decimalPlaces) {
-    if (decimalPlaces < MIN_DECIMAL_PLACES || decimalPlaces > MAX_DECIMAL_PLACES) {
-        printf("Decimal places must be between %d and %d.\n", MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES);
+void readAndValidateDecimalPlaces(int *decimalPlaces) {
+    int validInput = 0;
+    char extraChar;
 
-        return -1;
-    }
+    do {
+        printf("Enter the number of decimal places (from %d to %d): ", MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES);
+        if (scanf("%hu%c", decimalPlaces, &extraChar) != 2 || extraChar != '\n') {
+            printf("Invalid input! Please enter an integer without extra characters.\n");
+        } else if (*decimalPlaces < MIN_DECIMAL_PLACES || *decimalPlaces > MAX_DECIMAL_PLACES) {
+            printf("The number of decimal places must be between %d and %d.\n", MIN_DECIMAL_PLACES, MAX_DECIMAL_PLACES);
+        } else {
+            validInput = 1;
+        }
 
-    return 0;
+        while (extraChar != '\n' && extraChar != EOF) {
+            extraChar = getchar();
+        }
+    } while (!validInput);
 }
 
 int validateTriangleSides(const double a, const double b, const double c) {
     if ((a + b) <= c || (a + c) <= b || (b + c) <= a) {
-        printf("Triangle with provided sides doesn't exist.\n");
+        printf("A triangle with the given sides does not exist.\n");
 
         return -1;
     }
