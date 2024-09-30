@@ -117,8 +117,10 @@ void readAndValidateDecimalPlaces(int *decimalPlaces) {
 int validateTriangleSides(const double a, const double b, const double c) {
     if ((a + b) <= c || (a + c) <= b || (b + c) <= a) {
         printf("A triangle with the given sides does not exist.\n");
+
         return -1;
     }
+
     return 0;
 }
 
@@ -137,6 +139,7 @@ double calculateHeight(const double a, const double b, const double c, const dou
         case SIDE_C: return (2.0 * area) / c;
         default:
             printf("Invalid side for height calculation.\n");
+
             return -1;
     }
 }
@@ -148,6 +151,7 @@ double calculateMedian(const double a, const double b, const double c, const enu
         case SIDE_C: return 0.5 * sqrt(2.0 * a * a + 2.0 * b * b - c * c);
         default:
             printf("Invalid side for median calculation.\n");
+
             return -1;
     }
 }
@@ -159,12 +163,14 @@ double calculateBisector(const double a, const double b, const double c, const d
         case SIDE_C: return (2.0 / (a + b)) * sqrt(a * b * semiPerimeter * (semiPerimeter - c));
         default:
             printf("Invalid side for bisector calculation.\n");
+
             return -1;
     }
 }
 
 double truncateNumber(const double value, const int decimalPlaces) {
     const double factor = pow(10, decimalPlaces);
+    
     return trunc(value * factor) / factor;
 }
 
