@@ -170,7 +170,7 @@ double calculateBisector(const double a, const double b, const double c, const d
 
 double truncateNumber(const double value, const int decimalPlaces) {
     const double factor = pow(10, decimalPlaces);
-    
+
     return trunc(value * factor) / factor;
 }
 
