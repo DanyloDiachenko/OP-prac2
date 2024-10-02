@@ -30,7 +30,6 @@ void printNumber(double value, int decimalPlaces);
 
 int main() {
     double a = 0.0, b = 0.0, c = 0.0;
-    double semiPerimeter = 0.0, perimeter = 0.0;
     int decimalPlaces = 0;
     const char sideNames[] = {'a', 'b', 'c'};
 
@@ -45,6 +44,8 @@ int main() {
     }
 
     readAndValidateDecimalPlaces(&decimalPlaces);
+
+    double semiPerimeter = 0.0, perimeter = 0.0;
 
     perimeter = calculatePerimeter(a, b, c);
     printf("\nPerimeter: ");
