@@ -1,4 +1,4 @@
-// PASSED
+// PASSED //
 
 #include <stdio.h>
 #include <math.h>
