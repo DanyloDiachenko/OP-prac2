@@ -171,7 +171,7 @@ double calculateBisector(const double a, const double b, const double c, const d
 }
 
 double truncateNumber(const double value, const int decimalPlaces) {
-    const double factor = pow(10, decimalPlaces);
+    const double factor = pow(10.0, (double) decimalPlaces);
 
     return trunc(value * factor) / factor;
 }
@@ -186,8 +186,8 @@ void printNumber(const double value, const int decimalPlaces) {
             printf("0e+00\n");
         } else {
             const int exponent = (int)floor(log10(fabs(value)));
-            double mantissa = value / pow(10, exponent);
-            mantissa = trunc(mantissa * 10) / 10;
+            double mantissa = value / pow(10.0, (double) exponent);
+            mantissa = trunc(mantissa * 10.0) / 10.0;
 
             printf("%.1fe%+03d (auto modified)\n", mantissa, exponent);
         }
