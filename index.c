@@ -1,3 +1,5 @@
+// PASSED
+
 #include <stdio.h>
 #include <math.h>
 
@@ -5,7 +7,7 @@
 #define MIN_SIDE_LENGTH 0.00001
 #define MAX_SIDE_LENGTH 100000
 #define MIN_DECIMAL_PLACES 0
-#define MAX_DECIMAL_PLACES 12
+#define MAX_DECIMAL_PLACES 24
 
 enum TriangleSides {
     SIDE_A,
@@ -55,17 +57,17 @@ int main() {
     printNumber(area, decimalPlaces);
 
     for (int i = 0; i < 3; i++) {
-        printf("Height to side '%c' (truncated): ", sideNames[i]);
+        printf("Height to side '%c': ", sideNames[i]);
         printNumber(calculateHeight(a, b, c, area, i), decimalPlaces);
     }
 
     for (int i = 0; i < 3; i++) {
-        printf("Median to side '%c' (truncated): ", sideNames[i]);
+        printf("Median to side '%c': ", sideNames[i]);
         printNumber(calculateMedian(a, b, c, i), decimalPlaces);
     }
 
     for (int i = 0; i < 3; i++) {
-        printf("Bisector to side '%c' (truncated): ", sideNames[i]);
+        printf("Bisector to side '%c': ", sideNames[i]);
         printNumber(calculateBisector(a, b, c, semiPerimeter, i), decimalPlaces);
     }
 
@@ -187,7 +189,7 @@ void printNumber(const double value, const int decimalPlaces) {
             double mantissa = value / pow(10, exponent);
             mantissa = trunc(mantissa * 10) / 10;
 
-            printf("%.1fe%+03d (modified)\n", mantissa, exponent);
+            printf("%.1fe%+03d (auto modified)\n", mantissa, exponent);
         }
     }
 }
