@@ -45,13 +45,11 @@ int main() {
 
     readAndValidateDecimalPlaces(&decimalPlaces);
 
-    double semiPerimeter = 0.0, perimeter = 0.0;
-
-    perimeter = calculatePerimeter(a, b, c);
+    const double perimeter = calculatePerimeter(a, b, c);
     printf("\nPerimeter: ");
     printNumber(perimeter, decimalPlaces);
 
-    semiPerimeter = perimeter / 2.0;
+    const double semiPerimeter = perimeter / 2.0;
 
     const double area = calculateArea(a, b, c, semiPerimeter);
     printf("Area: ");
